@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1044032558340",
+    "firebase_url": "https://login-app-9508c.firebaseio.com",
+    "project_id": "login-app-9508c",
+    "storage_bucket": "login-app-9508c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044032558340:android:743e81e0aed54c7b68ac51",
+        "android_client_info": {
+          "package_name": "com.fes.login_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044032558340-g18e149p9jek5gnbq8ib2tk8ieo12sai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoKhDuImWzK_DesZ2IW0aS9S9uXG8bzh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044032558340-g18e149p9jek5gnbq8ib2tk8ieo12sai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
