@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:login_app/color/color.dart';
 class PhoneSignin extends StatefulWidget {
@@ -9,7 +10,7 @@ class PhoneSignin extends StatefulWidget {
 }
 
 class _PhoneSigninState extends State<PhoneSignin> {
-  PhoneNumber _phoneNumber;
+  String _phoneNumber;
 
   String _message;
   String _verificationId;
@@ -31,96 +32,111 @@ class _PhoneSigninState extends State<PhoneSignin> {
         title: Text('Phone Sign In'),
       ),
       body:SingleChildScrollView(
-        child:AnimatedContainer(
-          duration: Duration(milliseconds: 500),
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(top:20),
-          child: Column(
-            children: <Widget>[
-             Container(
-               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-               child: InternationalPhoneNumberInput(
-                 onInputChanged: (phoneNumberTxt) {
-                   _phoneNumber = phoneNumberTxt;
-               },
-               inputBorder: OutlineInputBorder(),
-               initialValue: number,
-               selectorType: PhoneInputSelectorType.DROPDOWN,
+        child:Column(
+          children: <Widget>[
+           Container(
+             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+             child: IntlPhoneField(
+               keyboardType: TextInputType.phone,
+    decoration: InputDecoration(
+                                    
+                hintText: 'Phone Number',
+       
+        border: OutlineInputBorder(
+            borderSide: BorderSide(),
+        ),
+    ),
+    initialCountryCode:  'NG',
+    onChanged: (phone) {
+        print(phone.completeNumber);
+        setState(() {
+          _phoneNumber = phone.completeNumber;
+        });
+    },
+) 
+             
+            //  InternationalPhoneNumberInput(
+            //    onInputChanged: (phoneNumberTxt) {
+            //      print(phoneNumberTxt);
+            //     //  _phoneNumber = phoneNumberTxt;
+            //  },
+            //  inputBorder: OutlineInputBorder(),
+            //  initialValue: number,
+            //  selectorType: PhoneInputSelectorType.DROPDOWN,
  
+            //  ),
+           ),
+
+           _isSMSsent==true?Container(
+             margin:  EdgeInsets.all(10),
+             child: TextField(
+               controller: _smsController,
+               decoration: InputDecoration(
+                 border: OutlineInputBorder(),
+                 hintText: 'OTP here',
+                 labelText: 'OTP',
                ),
+               maxLength:  6,
+               keyboardType: TextInputType.number,
              ),
-
-             _isSMSsent==true?Container(
-               margin:  EdgeInsets.all(10),
-               child: TextField(
-                 controller: _smsController,
-                 decoration: InputDecoration(
-                   border: OutlineInputBorder(),
-                   hintText: 'OTP here',
-                   labelText: 'OTP',
-                 ),
-                 maxLength:  6,
-                 keyboardType: TextInputType.number,
-               ),
-            
-             )
-             :Container(),
+          
+           )
+           :Container(),
 
 
-             _isSMSsent ==false ? InkWell(
-              onTap: () {
-                setState(() {
-                  _isSMSsent = true;
-                });
-                _verifyPhoneNumber();
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    primaryColor,
-                    secondaryColor,
-                  ]),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical:20),
-                margin: EdgeInsets.symmetric(horizontal: 30, vertical:20),
-                child: Center(
-                  child: Text(
-                    'Send OTP',
-                    style: TextStyle(
-                      color:Colors.white,
-                    ),
-                    ),
-                ),
-                ),
-            ):InkWell(
-              onTap: () {
-                _signInWithPhoneNumber();
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    primaryColor,
-                    secondaryColor,
-                  ]),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical:20),
-                margin: EdgeInsets.symmetric(horizontal: 30, vertical:20),
-                child: Center(
-                  child: Text(
-                    'Verify OTP',
-                    style: TextStyle(
-                      color:Colors.white,
-                    ),
-                    ),
-                ),
-                ),
-            )],
-          ),
-          ),
+           _isSMSsent ==false ? InkWell(
+            onTap: () {
+              setState(() {
+                _isSMSsent = true;
+              });
+              _verifyPhoneNumber();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  primaryColor,
+                  secondaryColor,
+                ]),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical:20),
+              margin: EdgeInsets.symmetric(horizontal: 30, vertical:20),
+              child: Center(
+                child: Text(
+                  'Send OTP',
+                  style: TextStyle(
+                    color:Colors.white,
+                  ),
+                  ),
+              ),
+              ),
+          ):InkWell(
+            onTap: () {
+              _signInWithPhoneNumber();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  primaryColor,
+                  secondaryColor,
+                ]),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical:20),
+              margin: EdgeInsets.symmetric(horizontal: 30, vertical:20),
+              child: Center(
+                child: Text(
+                  'Verify OTP',
+                  style: TextStyle(
+                    color:Colors.white,
+                  ),
+                  ),
+              ),
+              ),
+          )],
+        ),
         ),
     );
   }
@@ -152,7 +168,7 @@ final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
   _verificationId = verificationId;
 };
 await _auth.verifyPhoneNumber(
- phoneNumber: _phoneNumber.phoneNumber,
+ phoneNumber: _phoneNumber,
  timeout: const Duration(seconds: 120), verificationCompleted: verificationCompleted, verificationFailed: verificationfailed, codeSent: codeSent, 
  codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
 }

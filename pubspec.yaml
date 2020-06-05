@@ -28,6 +28,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   google_sign_in: ^4.4.4
   intl_phone_number_input: ^0.4.0+2
+  intl_phone_field: ^1.0.0
   
 
 
